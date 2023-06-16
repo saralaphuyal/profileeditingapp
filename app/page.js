@@ -1,23 +1,36 @@
 "use client";
 import Nav from "./Nav/Nav";
 import React, { useEffect, useState } from 'react';
-import { doc, updateDoc,deleteDoc } from 'firebase/firestore';
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import { FiEdit,FiTrash2 } from 'react-icons/fi';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import EditProfile from './Editprofile';
 import Link from "next/link";
 
+// interface DataItem {
+//   id: string;
+//   name: string;
+//   location: string;
+//   bio: string;
+//   profession: string;
+// profileimg:string;
+
+// }
 export default function Home() {
   const [data, setData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false); 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'Team'));
-        const documents = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const documents = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          profileimg: doc.data().profileimg, // Add profileimg property
+          ...doc.data(),
+        }));
         setData(documents);
       } catch (error) {
         console.log('Error fetching data: ', error);
@@ -29,16 +42,14 @@ export default function Home() {
 
   const handleEdit = (item) => {
     setSelectedItem(item);
-    setIsPopupOpen(true); 
+    setIsPopupOpen(true);
   };
 
   const handleUpdate = async (updatedItem) => {
     try {
-      
       const itemRef = doc(db, 'Team', updatedItem.id);
       await updateDoc(itemRef, updatedItem);
 
-      
       const updatedData = data.map((item) =>
         item.id === updatedItem.id ? { ...item, ...updatedItem } : item
       );
@@ -47,29 +58,27 @@ export default function Home() {
       console.log('Error updating data: ', error);
     }
 
-    setSelectedItem(null); 
-    setIsPopupOpen(false); 
+    setSelectedItem(null);
+    setIsPopupOpen(false);
   };
 
   const handleClosePopup = () => {
-    setSelectedItem(null); 
-    setIsPopupOpen(false); 
+    setSelectedItem(null);
+    setIsPopupOpen(false);
   };
 
   const handleDelete = async (item) => {
     try {
-      // Delete the item from Firebase
       const itemRef = doc(db, 'Team', item.id);
       await deleteDoc(itemRef);
-  
-      // Update the data in your Next.js app
+
       const updatedData = data.filter((dataItem) => dataItem.id !== item.id);
       setData(updatedData);
     } catch (error) {
       console.log('Error deleting data: ', error);
     }
   };
-  
+
   return (
     <main >
  <Nav/>
