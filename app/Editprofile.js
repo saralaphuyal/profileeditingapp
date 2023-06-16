@@ -2,21 +2,16 @@
 import { useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 
-interface SelectedItem {
-  name: string;
-  bio: string;
-  profession: string;
-  location: string;
-}
 
-export default function EditProfile({ selectedItem, handleUpdate, handleClose }: { selectedItem: SelectedItem, handleUpdate: Function, handleClose: Function }) {
-  const [updatedItem, setUpdatedItem] = useState<SelectedItem>(selectedItem);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+export default function EditProfile({ selectedItem, handleUpdate, handleClose }) {
+  const [updatedItem, setUpdatedItem] = useState(selectedItem);
+
+  const handleChange = (e) => {
     setUpdatedItem({ ...updatedItem, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     handleUpdate(updatedItem);
   };
