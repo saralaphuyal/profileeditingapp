@@ -28,7 +28,7 @@ export default function Home() {
         const querySnapshot = await getDocs(collection(db, 'Team'));
         const documents = querySnapshot.docs.map((doc) => ({
           id: doc.id,
-          profileimg: doc.data().profileimg, // Add profileimg property
+          profileimg: doc.data().profileimg,
           ...doc.data(),
         }));
         setData(documents);

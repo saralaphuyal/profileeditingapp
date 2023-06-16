@@ -24,7 +24,7 @@ export default function Nav() {
       <div className="md:flex items-center justify-between md:px-10 px-7 w-10/12 m-auto">
         <Link href="/">
          
-            <div className="font-bold text-2xl cursor-pointer flex items-center font-[Poppins] text-gray-800 pt-3 text-[#9867c5]">
+            <div className="font-bold text-2xl cursor-pointer flex items-center font-[Poppins]  pt-3 text-[#9867c5]">
               <h1>Profile Editing App</h1>
             </div>
          
