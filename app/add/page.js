@@ -39,7 +39,7 @@ export default function Add() {
     }
 
     try {
-      // Create a new document in the "Team" collection
+   
       const docRef = await addDoc(collection(db, "Team"), {
         name: name,
         bio: bio,
@@ -47,23 +47,23 @@ export default function Add() {
         profession: profession,
       });
 
-      // Check if a file is selected
+     
       if (profileimg) {
-        // Create a storage reference with a unique file name
+      
         const storageRef = ref(storage, `profilePictures/${docRef.id}-${profileimg.name}`);
 
-        // Convert the file to a data URL or Blob
+       
         const reader = new FileReader();
         reader.onload = async (event) => {
           const fileDataUrl = event.target.result;
 
-          // Upload the data URL or Blob to Firebase Storage
+          
           await uploadString(storageRef, fileDataUrl, 'data_url');
 
-          // Get the download URL of the uploaded file
+        
           const downloadURL = await getDownloadURL(storageRef);
 
-          // Update the document with the profile picture URL
+        
           await updateDoc(doc(db, "Team", docRef.id), {
             profileimg: downloadURL,
           });
@@ -71,15 +71,15 @@ export default function Add() {
         reader.readAsDataURL(profileimg);
       }
 
-      // Clear the form inputs
+     
       setState(initialState);
       setTimeout(() => {
         router.push('/');
       }, 1000);
-      // Show success message
+      
       showToast("Data added successfully!", "success");
     } catch (error) {
-      // Show error message
+   
       showToast(`Error adding data ${error}`, "error");
     }
   };
